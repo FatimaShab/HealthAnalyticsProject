@@ -17,7 +17,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for styling
+# Custom CSS for styling - optimized for Streamlit Cloud
 st.markdown("""
 <style>
     /* Main color palette */
@@ -29,12 +29,12 @@ st.markdown("""
         --quinary-color: #CAF0F8;
     }
     
-    /* Metric boxes styling */
+    /* Metric boxes styling - optimized for cloud */
     div[data-testid="metric-container"] {
         background-color: var(--quinary-color);
         border: 2px solid var(--tertiary-color);
-        padding: 15px;
-        border-radius: 10px;
+        padding: 12px;
+        border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
@@ -52,31 +52,41 @@ st.markdown("""
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    /* Custom metric styling */
+    /* Custom metric styling - adjusted for cloud rendering */
     .metric-box {
         background-color: #CAF0F8;
         border: 2px solid #00B4D8;
-        padding: 20px;
-        border-radius: 10px;
+        padding: 15px;
+        border-radius: 8px;
         text-align: center;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        min-height: 120px;
+        min-height: 100px;
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
     
     .metric-value {
-        font-size: 2.5em;
+        font-size: 2.2em;
         font-weight: bold;
         color: #03045E;
-        margin-top: 10px;
+        margin-top: 5px;
     }
     
     .metric-label {
-        font-size: 1.1em;
+        font-size: 1.0em;
         color: #0077B6;
-        margin-bottom: 5px;
+        margin-bottom: 3px;
+    }
+    
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 768px) {
+        .metric-value {
+            font-size: 1.8em;
+        }
+        .metric-label {
+            font-size: 0.9em;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -87,8 +97,10 @@ if st.session_state.authenticated:
     <style>
         /* Remove default Streamlit padding for dashboard only */
         .block-container {
-            padding-top: 0rem;
+            padding-top: 1rem;
             padding-bottom: 0rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -102,7 +114,7 @@ if not st.session_state.authenticated:
         .header-text {
             text-align: center;
             color: #03045E;
-            font-size: 2.2em;
+            font-size: 2.0em;
             font-weight: 700;
             margin-bottom: 10px;
             line-height: 1.2;
@@ -150,11 +162,10 @@ if not st.session_state.authenticated:
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         try:
-            logo = Image.open(
-                'aub_logo.png')
-            st.image(logo, width=200)
+            logo = Image.open('aub_logo.png')
+            st.image(logo, width=180)  # Slightly smaller for better mobile view
         except:
-            st.write("Logo not found")
+            st.markdown("🏥 **Healthcare Analytics Dashboard**")
 
     # Header
     st.markdown("""
@@ -205,28 +216,26 @@ else:
     # Load data
     @st.cache_data
     def load_data():
-        df = pd.read_csv(
-            'IP_Student_Depression.csv')
+        df = pd.read_csv('IP_Student_Depression.csv')
         return df
 
     df = load_data()
 
     # Sidebar with logo and filters
     with st.sidebar:
-        # Add university logo
+        # Add university logo - FIXED PATH
         try:
-            logo = Image.open(
-                '/Users/tumashab/Documents/AUB MSBA/MSBA 382 - Samar/Individual Project/aub_logo.png')
-            st.image(logo, width=200)
+            logo = Image.open('aub_logo.png')
+            st.image(logo, width=180)
         except:
-            st.write("Logo not found")
+            st.markdown("🏥 **Dashboard**")
 
         st.markdown(
-            "<h2 style='color: #03045E;'>Student Depression in India Dashboard</h2>", unsafe_allow_html=True)
+            "<h2 style='color: #03045E; font-size: 1.4em;'>Student Depression Dashboard</h2>", unsafe_allow_html=True)
         st.markdown("---")
 
         # Filters
-        st.markdown("<h3 style='color: #0077B6;'>Filters</h3>",
+        st.markdown("<h3 style='color: #0077B6; font-size: 1.2em;'>Filters</h3>",
                     unsafe_allow_html=True)
 
         # Gender filter with checkboxes
@@ -288,16 +297,16 @@ else:
         filtered_df = filtered_df[filtered_df['City'] == selected_city]
 
     # Main dashboard
-    st.markdown("<h2 style='text-align: center; color: #03045E; margin-bottom: 15px; margin-top: 10px;'>Student Depression Analytics Dashboard</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; color: #03045E; margin-bottom: 10px; margin-top: 5px; font-size: 1.8em;'>Student Depression Analytics Dashboard</h2>", unsafe_allow_html=True)
 
-    # Top row metrics
+    # Top row metrics - optimized layout
     col1, col2, col3, col4, col5, col6 = st.columns(6)
 
     # Calculate metrics
     total_students = len(filtered_df)
     depression_cases = len(filtered_df[filtered_df['Depression'] == 1])
     depression_rate = (depression_cases / total_students *
-                       100) if total_students > 0 else 0  # Changed to percentage
+                       100) if total_students > 0 else 0
     high_risk = len(filtered_df[(filtered_df['Depression'] == 1) & (
         filtered_df['Suicidal thoughts'] == 'Yes')])
 
@@ -350,7 +359,7 @@ else:
         st.markdown(f"""
         <div class="metric-box">
             <div class="metric-label">Top City w/ Dep.</div>
-            <div class="metric-value">{top_city}</div>
+            <div class="metric-value" style="font-size: 1.5em;">{top_city}</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -362,9 +371,9 @@ else:
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
-    # Second row visualizations
+    # Second row visualizations - optimized for cloud
     col1, col2, col3, col4 = st.columns(4)
 
     # Color palette for charts
@@ -380,10 +389,11 @@ else:
             color_discrete_sequence=colors[:len(gender_counts)]
         )
         fig_gender.update_layout(
-            height=300,
+            height=280,  # Slightly reduced for better fit
             showlegend=True,
-            font=dict(size=12),
-            margin=dict(t=40, b=0, l=0, r=0)
+            font=dict(size=11),
+            margin=dict(t=35, b=0, l=0, r=0),
+            title=dict(font=dict(size=14))
         )
         st.plotly_chart(fig_gender, use_container_width=True)
 
@@ -406,26 +416,28 @@ else:
             x='Stress Type',
             y='Average Score',
             color='Depression_Status',
-            title="Academic & Financial Stress by Depression",
+            title="Academic & Financial Stress",
             barmode='group',
-            # Dark blue for No Depression, Light blue for Depression
             color_discrete_sequence=[colors[0], colors[2]]
         )
         fig_stress.update_layout(
-            height=300,
+            height=280,
             showlegend=True,
             legend=dict(
                 orientation="h",
                 yanchor="top",
-                y=-0.15,
+                y=-0.2,
                 xanchor="center",
                 x=0.5,
-                title=None
+                title=None,
+                font=dict(size=10)
             ),
-            margin=dict(t=40, b=40, l=0, r=0),
+            margin=dict(t=35, b=50, l=0, r=0),
             xaxis_title="",
-            yaxis_title="Average Score (1-5)",
-            yaxis=dict(range=[0, 5.5])
+            yaxis_title="Avg Score",
+            yaxis=dict(range=[0, 5.5]),
+            title=dict(font=dict(size=14)),
+            font=dict(size=11)
         )
         st.plotly_chart(fig_stress, use_container_width=True)
 
@@ -446,13 +458,15 @@ else:
             color_discrete_sequence=[colors[1]]
         )
         fig_age.update_layout(
-            height=300,
+            height=280,
             showlegend=False,
-            margin=dict(t=40, b=0, l=0, r=0)
+            margin=dict(t=35, b=0, l=0, r=0),
+            title=dict(font=dict(size=14)),
+            font=dict(size=11)
         )
         st.plotly_chart(fig_age, use_container_width=True)
 
-        # Degree Level stacked chart (under Age Distribution)
+        # Degree Level stacked chart
         degree_data = filtered_df.groupby(
             ['Degree_Level', 'Depression']).size().reset_index(name='Count')
         degree_data['Depression_Status'] = degree_data['Depression'].map(
@@ -463,26 +477,29 @@ else:
             x='Degree_Level',
             y='Count',
             color='Depression_Status',
-            title="Depression Distribution by Degree Level",
+            title="Depression by Degree Level",
             color_discrete_sequence=[colors[0], colors[2]],
             barmode='stack'
         )
 
         fig_degree.update_layout(
-            height=300,
+            height=280,
             showlegend=True,
             legend=dict(
                 orientation="h",
                 yanchor="top",
-                y=-0.35,
+                y=-0.4,
                 xanchor="center",
                 x=0.5,
-                title=None
+                title=None,
+                font=dict(size=10)
             ),
-            margin=dict(t=40, b=80, l=0, r=0),
+            margin=dict(t=35, b=85, l=0, r=0),
             xaxis_title="",
-            yaxis_title="Number of Students",
-            xaxis_tickangle=-45
+            yaxis_title="Students",
+            xaxis_tickangle=-45,
+            title=dict(font=dict(size=14)),
+            font=dict(size=11)
         )
 
         st.plotly_chart(fig_degree, use_container_width=True)
@@ -497,8 +514,8 @@ else:
 
         # Rename family history values for clarity
         family_depression['Family History of Mental Illness'] = family_depression['Family History of Mental Illness'].map({
-            'Yes': 'With Family History',
-            'No': 'No Family History'
+            'Yes': 'With F. History',
+            'No': 'No F. History'
         })
 
         fig_family = px.bar(
@@ -511,24 +528,26 @@ else:
             color_discrete_sequence=[colors[0], colors[2]]
         )
         fig_family.update_layout(
-            height=300,
+            height=280,
             showlegend=True,
             legend=dict(
                 orientation="h",
                 yanchor="top",
-                y=-0.15,
+                y=-0.2,
                 xanchor="center",
                 x=0.5,
-                title=None
+                title=None,
+                font=dict(size=10)
             ),
-            margin=dict(t=40, b=40, l=0, r=0),
+            margin=dict(t=35, b=50, l=0, r=0),
             xaxis_title="",
-            yaxis_title="Count"
+            yaxis_title="Count",
+            title=dict(font=dict(size=14)),
+            font=dict(size=11)
         )
         st.plotly_chart(fig_family, use_container_width=True)
 
-        # Sleep Hours line chart (under Family History)
-        # First create a copy and rename sleep duration categories
+        # Sleep Hours line chart
         sleep_df = filtered_df.copy()
         sleep_df['Sleep Duration'] = sleep_df['Sleep Duration'].replace({
             '5-6 hours': '5-6 hrs',
@@ -548,25 +567,28 @@ else:
             x='Sleep Duration',
             y='Count',
             color='Depression_Status',
-            title="Sleep Hours Distribution by Depression",
+            title="Sleep Hours by Depression",
             markers=True,
             color_discrete_sequence=[colors[0], colors[2]]
         )
 
         fig_sleep.update_layout(
-            height=300,
+            height=280,
             showlegend=True,
             legend=dict(
                 orientation="h",
                 yanchor="top",
-                y=-0.45,
+                y=-0.5,
                 xanchor="center",
                 x=0.5,
-                title=None
+                title=None,
+                font=dict(size=10)
             ),
-            margin=dict(t=40, b=100, l=0, r=0),
+            margin=dict(t=35, b=110, l=0, r=0),
             xaxis_title="",
-            yaxis_title="Number of Students"
+            yaxis_title="Students",
+            title=dict(font=dict(size=14)),
+            font=dict(size=11)
         )
 
         st.plotly_chart(fig_sleep, use_container_width=True)
@@ -583,7 +605,7 @@ else:
             x=top_5_cities['count'],
             y=top_5_cities['City'],
             mode='markers+lines',
-            marker=dict(size=12, color=colors[1]),
+            marker=dict(size=10, color=colors[1]),
             line=dict(color=colors[3], width=2),
             name=''
         ))
@@ -593,22 +615,24 @@ else:
             x=top_5_cities['count'],
             y=top_5_cities['City'],
             mode='markers',
-            marker=dict(size=15, color=colors[0]),
+            marker=dict(size=12, color=colors[0]),
             name='',
             showlegend=False
         ))
 
         fig_cities.update_layout(
-            title="Top 5 Cities - Depression Count",
-            xaxis_title="Depression Cases",
+            title="Top 5 Cities - Depression",
+            xaxis_title="Cases",
             yaxis_title="",
-            height=300,
+            height=280,
             showlegend=False,
-            margin=dict(t=40, b=0, l=0, r=0)
+            margin=dict(t=35, b=0, l=0, r=0),
+            title=dict(font=dict(size=14)),
+            font=dict(size=11)
         )
         st.plotly_chart(fig_cities, use_container_width=True)
 
-        # Dietary Habits grouped bar chart (under Top 5 Cities)
+        # Dietary Habits grouped bar chart
         diet_data = filtered_df.groupby(
             ['Dietary Habits', 'Depression']).size().reset_index(name='Count')
         diet_data['Depression_Status'] = diet_data['Depression'].map(
@@ -625,20 +649,23 @@ else:
         )
 
         fig_diet.update_layout(
-            height=300,
+            height=280,
             showlegend=True,
             legend=dict(
                 orientation="h",
                 yanchor="top",
-                y=-0.4,
+                y=-0.45,
                 xanchor="center",
                 x=0.5,
-                title=None
+                title=None,
+                font=dict(size=10)
             ),
-            margin=dict(t=40, b=90, l=0, r=0),
+            margin=dict(t=35, b=95, l=0, r=0),
             xaxis_title="",
             yaxis_title="Count",
-            xaxis_tickangle=-45
+            xaxis_tickangle=-45,
+            title=dict(font=dict(size=14)),
+            font=dict(size=11)
         )
 
         st.plotly_chart(fig_diet, use_container_width=True)
