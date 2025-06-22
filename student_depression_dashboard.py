@@ -162,8 +162,9 @@ if not st.session_state.authenticated:
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         try:
-            logo = Image.open('aub_logo.png')
-            st.image(logo, width=180)  # Slightly smaller for better mobile view
+            # Load logo directly from GitHub repository
+            logo_url = "https://raw.githubusercontent.com/FatimaShab/HealthAnalyticsProject/main/aub_logo.png"
+            st.image(logo_url, width=180)
         except:
             st.markdown("🏥 **Healthcare Analytics Dashboard**")
 
@@ -223,10 +224,10 @@ else:
 
     # Sidebar with logo and filters
     with st.sidebar:
-        # Add university logo - FIXED PATH
+        # Add university logo - Load from GitHub URL
         try:
-            logo = Image.open('aub_logo.png')
-            st.image(logo, width=180)
+            logo_url = "https://raw.githubusercontent.com/FatimaShab/HealthAnalyticsProject/main/aub_logo.png"
+            st.image(logo_url, width=180)
         except:
             st.markdown("🏥 **Dashboard**")
 
