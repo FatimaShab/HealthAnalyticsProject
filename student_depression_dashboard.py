@@ -622,13 +622,12 @@ else:
         ))
 
         fig_cities.update_layout(
-            title="Top 5 Cities - Depression",
+            title=dict(text="Top 5 Cities - Depression", font=dict(size=14)),
             xaxis_title="Cases",
             yaxis_title="",
             height=280,
             showlegend=False,
             margin=dict(t=35, b=0, l=0, r=0),
-            title=dict(font=dict(size=14)),
             font=dict(size=11)
         )
         st.plotly_chart(fig_cities, use_container_width=True)
