@@ -360,7 +360,7 @@ else:
         st.markdown(f"""
         <div class="metric-box">
             <div class="metric-label">Top City w/ Dep.</div>
-            <div class="metric-value" style="font-size: 1.5em;">{top_city}</div>
+            <div class="metric-value">{top_city}</div>
         </div>
         """, unsafe_allow_html=True)
 
