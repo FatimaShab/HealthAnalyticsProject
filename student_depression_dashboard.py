@@ -191,7 +191,7 @@ if not st.session_state.authenticated:
     """, unsafe_allow_html=True)
 
     # Password input
-    st.markdown("<p style='text-align: center; color: #666; margin-bottom: 10px;'>Please enter your credentials to access the dashboard</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #666; margin-bottom: 10px;'>Please enter the password to access the dashboard</p>", unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -204,7 +204,7 @@ if not st.session_state.authenticated:
                 st.rerun()
             else:
                 st.error(
-                    "❌ Invalid credentials. Please verify your password and try again.")
+                    "❌ Invalid. Please verify your password and try again.")
 
     # Footer
     st.markdown("""
